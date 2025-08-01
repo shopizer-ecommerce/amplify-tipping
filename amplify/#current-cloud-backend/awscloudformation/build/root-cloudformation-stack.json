@@ -110,6 +110,53 @@
       "UpdateReplacePolicy": "Retain",
       "DeletionPolicy": "Retain"
     },
+    "DeploymentBucketBlockHTTP": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "DeploymentBucketName"
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "s3:*",
+              "Effect": "Deny",
+              "Principal": "*",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:s3:::",
+                      {
+                        "Ref": "DeploymentBucketName"
+                      },
+                      "/*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:s3:::",
+                      {
+                        "Ref": "DeploymentBucketName"
+                      }
+                    ]
+                  ]
+                }
+              ],
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": false
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
     "AuthRole": {
       "Type": "AWS::IAM::Role",
       "Properties": {
@@ -150,372 +197,6 @@
         "RoleName": {
           "Ref": "UnauthRoleName"
         }
-      }
-    },
-    "AuthTriggerCustomLambdaStack": {
-      "Type": "AWS::CloudFormation::Stack",
-      "Properties": {
-        "TemplateURL": "https://s3.amazonaws.com/amplify-tipgov2-prodca-134718-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json",
-        "Parameters": {
-          "env": "prodca",
-          "userpoolId": {
-            "Fn::GetAtt": [
-              "authtipgov2",
-              "Outputs.UserPoolId"
-            ]
-          },
-          "userpoolArn": {
-            "Fn::GetAtt": [
-              "authtipgov2",
-              "Outputs.UserPoolArn"
-            ]
-          },
-          "functiontipgov2CustomMessageArn": {
-            "Fn::GetAtt": [
-              "functiontipgov2CustomMessage",
-              "Outputs.Arn"
-            ]
-          },
-          "functiontipgov2CustomMessageName": {
-            "Fn::GetAtt": [
-              "functiontipgov2CustomMessage",
-              "Outputs.Name"
-            ]
-          }
-        }
-      },
-      "DependsOn": [
-        "authtipgov2",
-        "functiontipgov2CustomMessage"
-      ]
-    },
-    "functiontipgov2CustomMessage": {
-      "Type": "AWS::CloudFormation::Stack",
-      "Properties": {
-        "TemplateURL": "https://s3.amazonaws.com/amplify-tipgov2-prodca-134718-deployment/amplify-cfn-templates/function/tipgov2CustomMessage-cloudformation-template.json",
-        "Parameters": {
-          "modules": "custom",
-          "resourceName": "tipgov2CustomMessage",
-          "deploymentBucketName": "amplify-tipgov2-prodca-134718-deployment",
-          "s3Key": "amplify-builds/tipgov2CustomMessage-62796561664338725364-build.zip",
-          "env": "prodca"
-        }
-      }
-    },
-    "authtipgov2": {
-      "Type": "AWS::CloudFormation::Stack",
-      "Properties": {
-        "TemplateURL": "https://s3.amazonaws.com/amplify-tipgov2-prodca-134718-deployment/amplify-cfn-templates/auth/tipgov2-cloudformation-template.json",
-        "Parameters": {
-          "identityPoolName": "tipgov2",
-          "allowUnauthenticatedIdentities": false,
-          "resourceNameTruncated": "tipgov61939aed",
-          "userPoolName": "tipgov2",
-          "autoVerifiedAttributes": "email",
-          "mfaConfiguration": "OFF",
-          "mfaTypes": "SMS Text Message",
-          "smsAuthenticationMessage": "Your authentication code is {####}",
-          "smsVerificationMessage": "Your verification code is {####}",
-          "emailVerificationSubject": "Your verification code",
-          "emailVerificationMessage": "Your verification code is {####}",
-          "defaultPasswordPolicy": true,
-          "passwordPolicyMinLength": 8,
-          "passwordPolicyCharacters": "",
-          "requiredAttributes": "email,locale",
-          "aliasAttributes": "",
-          "userpoolClientGenerateSecret": false,
-          "userpoolClientRefreshTokenValidity": 30,
-          "userpoolClientWriteAttributes": "email",
-          "userpoolClientReadAttributes": "email",
-          "userpoolClientLambdaRole": "tipgov61939aed_userpoolclient_lambda_role",
-          "userpoolClientSetAttributes": false,
-          "sharedId": "61939aed",
-          "resourceName": "tipgov2",
-          "authSelections": "identityPoolAndUserPool",
-          "useDefault": "default",
-          "usernameAttributes": "email",
-          "userPoolGroups": false,
-          "adminQueries": false,
-          "triggers": "{\"CustomMessage\":[\"custom\"]}",
-          "hostedUI": false,
-          "userPoolGroupList": "",
-          "serviceName": "Cognito",
-          "usernameCaseSensitive": false,
-          "useEnabledMfas": true,
-          "authRoleArn": {
-            "Fn::GetAtt": [
-              "AuthRole",
-              "Arn"
-            ]
-          },
-          "unauthRoleArn": {
-            "Fn::GetAtt": [
-              "UnauthRole",
-              "Arn"
-            ]
-          },
-          "breakCircularDependency": true,
-          "dependsOn": "[object Object]",
-          "permissions": "",
-          "authTriggerConnections": "{\"triggerType\":\"CustomMessage\",\"lambdaFunctionName\":\"tipgov2CustomMessage\"}",
-          "parentStack": {
-            "Ref": "AWS::StackId"
-          },
-          "authProviders": "",
-          "env": "prodca"
-        }
-      }
-    },
-    "apitipgov2": {
-      "Type": "AWS::CloudFormation::Stack",
-      "Properties": {
-        "TemplateURL": "https://s3.amazonaws.com/amplify-tipgov2-prodca-134718-deployment/amplify-cfn-templates/api/cloudformation-template.json",
-        "Parameters": {
-          "AppSyncApiName": "tipgov2",
-          "DynamoDBBillingMode": "PAY_PER_REQUEST",
-          "DynamoDBEnableServerSideEncryption": false,
-          "AuthCognitoUserPoolId": {
-            "Fn::GetAtt": [
-              "authtipgov2",
-              "Outputs.UserPoolId"
-            ]
-          },
-          "S3DeploymentBucket": "amplify-tipgov2-prodca-134718-deployment",
-          "S3DeploymentRootKey": "amplify-appsync-files/5018a416ab75f8ade9b9189852a1ed268755489f",
-          "env": "prodca"
-        }
-      }
-    },
-    "hostingamplifyhosting": {
-      "Type": "AWS::CloudFormation::Stack",
-      "Properties": {
-        "TemplateURL": "https://s3.amazonaws.com/amplify-tipgov2-prodca-134718-deployment/amplify-cfn-templates/hosting/amplifyhosting-template.json",
-        "Parameters": {
-          "appId": "d342z1f5gwadi0",
-          "type": "manual",
-          "env": "prodca"
-        }
-      }
-    },
-    "storagetipngov2profile": {
-      "Type": "AWS::CloudFormation::Stack",
-      "Properties": {
-        "TemplateURL": "https://s3.amazonaws.com/amplify-tipgov2-prodca-134718-deployment/amplify-cfn-templates/storage/cloudformation-template.json",
-        "Parameters": {
-          "bucketName": "tipngov2profile",
-          "selectedGuestPermissions": "",
-          "selectedAuthenticatedPermissions": "s3:PutObject,s3:GetObject,s3:ListBucket,s3:DeleteObject",
-          "unauthRoleName": {
-            "Ref": "UnauthRoleName"
-          },
-          "authRoleName": {
-            "Ref": "AuthRoleName"
-          },
-          "s3PrivatePolicy": "Private_policy_4699c767",
-          "s3ProtectedPolicy": "Protected_policy_4699c767",
-          "s3PublicPolicy": "Public_policy_4699c767",
-          "s3ReadPolicy": "read_policy_4699c767",
-          "s3UploadsPolicy": "Uploads_policy_4699c767",
-          "authPolicyName": "s3_amplify_4699c767",
-          "unauthPolicyName": "s3_amplify_4699c767",
-          "AuthenticatedAllowList": "ALLOW",
-          "GuestAllowList": "DISALLOW",
-          "s3PermissionsAuthenticatedPrivate": "s3:PutObject,s3:GetObject,s3:DeleteObject",
-          "s3PermissionsAuthenticatedProtected": "s3:PutObject,s3:GetObject,s3:DeleteObject",
-          "s3PermissionsAuthenticatedPublic": "s3:PutObject,s3:GetObject,s3:DeleteObject",
-          "s3PermissionsAuthenticatedUploads": "s3:PutObject",
-          "s3PermissionsGuestPublic": "DISALLOW",
-          "s3PermissionsGuestUploads": "DISALLOW",
-          "env": "prodca"
-        }
-      }
-    },
-    "UpdateRolesWithIDPFunction": {
-      "DependsOn": [
-        "AuthRole",
-        "UnauthRole",
-        "authtipgov2"
-      ],
-      "Type": "AWS::Lambda::Function",
-      "Properties": {
-        "Code": {
-          "ZipFile": {
-            "Fn::Join": [
-              "\n",
-              [
-                "const response = require('cfn-response');",
-                "const aws = require('aws-sdk');",
-                "let responseData = {};",
-                "exports.handler = function(event, context) {",
-                "  try {",
-                "    let authRoleName = event.ResourceProperties.authRoleName;",
-                "    let unauthRoleName = event.ResourceProperties.unauthRoleName;",
-                "    let idpId = event.ResourceProperties.idpId;",
-                "    let promises = [];",
-                "    let getPromises = [];",
-                "    let authParamsJson = { 'Version': '2012-10-17','Statement': [{'Effect': 'Allow','Principal': {'Federated': 'cognito-identity.amazonaws.com'},'Action': 'sts:AssumeRoleWithWebIdentity','Condition': {'StringEquals': {'cognito-identity.amazonaws.com:aud': idpId},'ForAnyValue:StringLike': {'cognito-identity.amazonaws.com:amr': 'authenticated'}}}]};",
-                "    let unauthParamsJson = { 'Version': '2012-10-17','Statement': [{'Effect': 'Allow','Principal': {'Federated': 'cognito-identity.amazonaws.com'},'Action': 'sts:AssumeRoleWithWebIdentity','Condition': {'StringEquals': {'cognito-identity.amazonaws.com:aud': idpId},'ForAnyValue:StringLike': {'cognito-identity.amazonaws.com:amr': 'unauthenticated'}}}]};",
-                "    if (event.RequestType == 'Delete') {",
-                "        delete authParamsJson.Statement[0].Condition;",
-                "        delete unauthParamsJson.Statement[0].Condition;",
-                "        let authParams = { PolicyDocument: JSON.stringify(authParamsJson),RoleName: authRoleName};",
-                "        let unauthParams = {PolicyDocument: JSON.stringify(unauthParamsJson),RoleName: unauthRoleName};",
-                "        const iam = new aws.IAM({ apiVersion: '2010-05-08', region: event.ResourceProperties.region});",
-                "        getPromises.push(iam.getRole({RoleName: authParams.RoleName}).promise());",
-                "        getPromises.push(iam.getRole({RoleName: unauthParams.RoleName}).promise());",
-                "        Promise.all(getPromises)",
-                "         .then((res) => {",
-                "        console.log('in res' , res)",
-                "           promises.push(iam.updateAssumeRolePolicy(authParams).promise());",
-                "           promises.push(iam.updateAssumeRolePolicy(unauthParams).promise());",
-                "           return Promise.all(promises)",
-                "             .then((res) => {",
-                "               console.log(\"delete response data\" + JSON.stringify(res));",
-                "               response.send(event, context, response.SUCCESS, {});",
-                "             });",
-                "          })",
-                "           .catch((err) => {",
-                "             console.log(err.stack);",
-                "             responseData = {Error: err};",
-                "             response.send(event, context, response.SUCCESS, responseData);",
-                "             })",
-                "    }",
-                "    if (event.RequestType == 'Update' || event.RequestType == 'Create') {",
-                "       const iam = new aws.IAM({ apiVersion: '2010-05-08', region: event.ResourceProperties.region});",
-                "        let authParams = { PolicyDocument: JSON.stringify(authParamsJson),RoleName: authRoleName};",
-                "        let unauthParams = {PolicyDocument: JSON.stringify(unauthParamsJson),RoleName: unauthRoleName};",
-                "        promises.push(iam.updateAssumeRolePolicy(authParams).promise());",
-                "        promises.push(iam.updateAssumeRolePolicy(unauthParams).promise());",
-                "        Promise.all(promises)",
-                "         .then((res) => {",
-                "            console.log(\"createORupdate\" + res);",
-                "            console.log(\"response data\" + JSON.stringify(res));",
-                "            response.send(event, context, response.SUCCESS, {});",
-                "         });",
-                "    }",
-                "  } catch(err) {",
-                "       console.log(err.stack);",
-                "       responseData = {Error: err};",
-                "       response.send(event, context, response.FAILED, responseData);",
-                "       throw err;",
-                "  }",
-                "};"
-              ]
-            ]
-          }
-        },
-        "Handler": "index.handler",
-        "Runtime": "nodejs12.x",
-        "Timeout": 300,
-        "Role": {
-          "Fn::GetAtt": [
-            "UpdateRolesWithIDPFunctionRole",
-            "Arn"
-          ]
-        }
-      }
-    },
-    "UpdateRolesWithIDPFunctionOutputs": {
-      "Type": "Custom::LambdaCallout",
-      "Properties": {
-        "ServiceToken": {
-          "Fn::GetAtt": [
-            "UpdateRolesWithIDPFunction",
-            "Arn"
-          ]
-        },
-        "region": {
-          "Ref": "AWS::Region"
-        },
-        "idpId": {
-          "Fn::GetAtt": [
-            "authtipgov2",
-            "Outputs.IdentityPoolId"
-          ]
-        },
-        "authRoleName": {
-          "Ref": "AuthRole"
-        },
-        "unauthRoleName": {
-          "Ref": "UnauthRole"
-        }
-      }
-    },
-    "UpdateRolesWithIDPFunctionRole": {
-      "Type": "AWS::IAM::Role",
-      "Properties": {
-        "RoleName": {
-          "Fn::Join": [
-            "",
-            [
-              {
-                "Ref": "AuthRole"
-              },
-              "-idp"
-            ]
-          ]
-        },
-        "AssumeRolePolicyDocument": {
-          "Version": "2012-10-17",
-          "Statement": [
-            {
-              "Effect": "Allow",
-              "Principal": {
-                "Service": [
-                  "lambda.amazonaws.com"
-                ]
-              },
-              "Action": [
-                "sts:AssumeRole"
-              ]
-            }
-          ]
-        },
-        "Policies": [
-          {
-            "PolicyName": "UpdateRolesWithIDPFunctionPolicy",
-            "PolicyDocument": {
-              "Version": "2012-10-17",
-              "Statement": [
-                {
-                  "Effect": "Allow",
-                  "Action": [
-                    "logs:CreateLogGroup",
-                    "logs:CreateLogStream",
-                    "logs:PutLogEvents"
-                  ],
-                  "Resource": "arn:aws:logs:*:*:*"
-                },
-                {
-                  "Effect": "Allow",
-                  "Action": [
-                    "iam:UpdateAssumeRolePolicy",
-                    "iam:GetRole"
-                  ],
-                  "Resource": {
-                    "Fn::GetAtt": [
-                      "AuthRole",
-                      "Arn"
-                    ]
-                  }
-                },
-                {
-                  "Effect": "Allow",
-                  "Action": [
-                    "iam:UpdateAssumeRolePolicy",
-                    "iam:GetRole"
-                  ],
-                  "Resource": {
-                    "Fn::GetAtt": [
-                      "UnauthRole",
-                      "Arn"
-                    ]
-                  }
-                }
-              ]
-            }
-          }
-        ]
       }
     }
   }

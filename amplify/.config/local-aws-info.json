@@ -1,7 +1,7 @@
 {
-  "prodca": {
+  "dev": {
     "configLevel": "project",
     "useProfile": true,
-    "profileName": "amplify-cli"
+    "profileName": "mac-amplify"
   }
 }
