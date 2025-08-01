@@ -59,7 +59,7 @@
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-amplifytipping-dev-0fe17-deployment/amplify-cfn-templates/auth/amplifytippingbece2485bece2485-cloudformation-template.json",
         "logicalId": "authamplifytippingbece2485bece2485"
       },
-      "lastPushTimeStamp": "2025-08-01T22:12:17.313Z",
+      "lastPushTimeStamp": "2025-08-01T23:45:48.558Z",
       "output": {
         "CreatedSNSRole": "arn:aws:iam::013537969376:role/snsbece24850fe17-dev",
         "UserPoolId": "ca-central-1_pfcK6BG9T",
@@ -90,7 +90,7 @@
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-amplifytipping-dev-0fe17-deployment/amplify-cfn-templates/function/amplifytippingbece2485bece2485CustomMessage-cloudformation-template.json",
         "logicalId": "functionamplifytippingbece2485bece2485CustomMessage"
       },
-      "lastPushTimeStamp": "2025-08-01T22:12:17.313Z",
+      "lastPushTimeStamp": "2025-08-01T23:45:48.559Z",
       "output": {
         "LambdaExecutionRoleArn": "arn:aws:iam::013537969376:role/amplifytippingbece2485bece2485CustomMessage-dev",
         "Region": "ca-central-1",
