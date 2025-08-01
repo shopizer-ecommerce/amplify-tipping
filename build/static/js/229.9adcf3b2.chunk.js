@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkamplify_login=self.webpackChunkamplify_login||[]).push([[229],{2229:function(e,t,n){n.r(t),n.d(t,{default:function(){return u}});var i=n(2791),r=n(3081),a=n(4333),s=n(184);function u(){var e=(0,i.useContext)(r.I).state.user;return(0,s.jsx)("section",{children:(!e.name||!e.birthdate)&&(0,s.jsx)(a.bZ,{type:"warning",text:"Please, complete the Profile!"})})}}}]);
+//# sourceMappingURL=229.9adcf3b2.chunk.js.map

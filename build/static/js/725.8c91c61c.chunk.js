@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkamplify_login=self.webpackChunkamplify_login||[]).push([[725],{3725:function(e,a,f){f(2791);a.Z=f.p+"static/media/logo_tng.6a3a7bb681f9ef4383f47d9e097336e6.svg"}}]);
+//# sourceMappingURL=725.8c91c61c.chunk.js.map
