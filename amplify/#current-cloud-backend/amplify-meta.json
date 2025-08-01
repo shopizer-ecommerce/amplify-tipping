@@ -9,14 +9,25 @@
       "UnauthRoleName": "amplify-amplifytipping-dev-0fe17-unauthRole",
       "StackName": "amplify-amplifytipping-dev-0fe17",
       "StackId": "arn:aws:cloudformation:ca-central-1:013537969376:stack/amplify-amplifytipping-dev-0fe17/555d1500-6ecd-11f0-ac30-06c939eaf671",
-      "AmplifyAppId": "d24eif5iebm8hs"
+      "AmplifyAppId": "d24eif5iebm8hs",
+      "AuthTriggerTemplateURL": "https://s3.amazonaws.com/amplify-amplifytipping-dev-0fe17-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json"
     }
   },
   "auth": {
     "amplifytippingbece2485bece2485": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
-      "dependsOn": [],
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "amplifytippingbece2485bece2485CustomMessage",
+          "triggerProvider": "Cognito",
+          "attributes": [
+            "Arn",
+            "Name"
+          ]
+        }
+      ],
       "customAuth": false,
       "frontendAuthConfig": {
         "socialProviders": [],
@@ -48,7 +59,7 @@
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-amplifytipping-dev-0fe17-deployment/amplify-cfn-templates/auth/amplifytippingbece2485bece2485-cloudformation-template.json",
         "logicalId": "authamplifytippingbece2485bece2485"
       },
-      "lastPushTimeStamp": "2025-08-01T17:06:52.636Z",
+      "lastPushTimeStamp": "2025-08-01T22:12:17.313Z",
       "output": {
         "CreatedSNSRole": "arn:aws:iam::013537969376:role/snsbece24850fe17-dev",
         "UserPoolId": "ca-central-1_pfcK6BG9T",
@@ -59,7 +70,35 @@
         "IdentityPoolName": "amplifytippingdev__dev",
         "UserPoolName": "amplifytippingbece2485_userpool_bece2485"
       },
-      "lastPushDirHash": "gMhza/BZpKETcSzfh8lRIQ43O9o="
+      "lastPushDirHash": "1x1Xn3/7/NKc18FCZfq8t1EvyDg="
+    }
+  },
+  "function": {
+    "amplifytippingbece2485bece2485CustomMessage": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "lastBuildTimeStamp": "2025-08-01T22:09:44.100Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2025-08-01T22:09:44.147Z",
+      "distZipFilename": "amplifytippingbece2485bece2485CustomMessage-4b7a34626e673877777a-build.zip",
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-amplifytipping-dev-0fe17-deployment",
+        "s3Key": "amplify-builds/amplifytippingbece2485bece2485CustomMessage-4b7a34626e673877777a-build.zip"
+      },
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-amplifytipping-dev-0fe17-deployment/amplify-cfn-templates/function/amplifytippingbece2485bece2485CustomMessage-cloudformation-template.json",
+        "logicalId": "functionamplifytippingbece2485bece2485CustomMessage"
+      },
+      "lastPushTimeStamp": "2025-08-01T22:12:17.313Z",
+      "output": {
+        "LambdaExecutionRoleArn": "arn:aws:iam::013537969376:role/amplifytippingbece2485bece2485CustomMessage-dev",
+        "Region": "ca-central-1",
+        "Arn": "arn:aws:lambda:ca-central-1:013537969376:function:amplifytippingbece2485bece2485CustomMessage-dev",
+        "Name": "amplifytippingbece2485bece2485CustomMessage-dev",
+        "LambdaExecutionRole": "amplifytippingbece2485bece2485CustomMessage-dev"
+      },
+      "lastPushDirHash": "ysMGB7/3PdtzIK9Q97N0DjQgiFA="
     }
   }
 }

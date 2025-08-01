@@ -1,0 +1,16 @@
+{
+  "trigger": true,
+  "modules": [
+    "custom"
+  ],
+  "parentResource": "amplifytippingbece2485bece2485",
+  "functionName": "amplifytippingbece2485bece2485CustomMessage",
+  "resourceName": "amplifytippingbece2485bece2485CustomMessage",
+  "parentStack": "auth",
+  "triggerEnvs": "[]",
+  "triggerDir": "/snapshot/amplify-cli/build/node_modules/@aws-amplify/amplify-category-auth/provider-utils/awscloudformation/triggers/CustomMessage",
+  "triggerTemplate": "CustomMessage.json.ejs",
+  "triggerEventPath": "CustomMessage.event.json",
+  "roleName": "amplifytippingbece2485bece2485CustomMessage",
+  "skipEdit": true
+}

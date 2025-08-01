@@ -199,6 +199,55 @@
         }
       }
     },
+    "AuthTriggerCustomLambdaStack": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": "https://s3.amazonaws.com/amplify-amplifytipping-dev-0fe17-deployment/amplify-cfn-templates/auth/auth-trigger-cloudformation-template.json",
+        "Parameters": {
+          "env": "dev",
+          "userpoolId": {
+            "Fn::GetAtt": [
+              "authamplifytippingbece2485bece2485",
+              "Outputs.UserPoolId"
+            ]
+          },
+          "userpoolArn": {
+            "Fn::GetAtt": [
+              "authamplifytippingbece2485bece2485",
+              "Outputs.UserPoolArn"
+            ]
+          },
+          "snsRoleArn": {
+            "Fn::GetAtt": [
+              "authamplifytippingbece2485bece2485",
+              "Outputs.CreatedSNSRole"
+            ]
+          },
+          "functionamplifytippingbece2485bece2485CustomMessageLambdaExecutionRole": {
+            "Fn::GetAtt": [
+              "functionamplifytippingbece2485bece2485CustomMessage",
+              "Outputs.LambdaExecutionRoleArn"
+            ]
+          },
+          "functionamplifytippingbece2485bece2485CustomMessageArn": {
+            "Fn::GetAtt": [
+              "functionamplifytippingbece2485bece2485CustomMessage",
+              "Outputs.Arn"
+            ]
+          },
+          "functionamplifytippingbece2485bece2485CustomMessageName": {
+            "Fn::GetAtt": [
+              "functionamplifytippingbece2485bece2485CustomMessage",
+              "Outputs.Name"
+            ]
+          }
+        }
+      },
+      "DependsOn": [
+        "authamplifytippingbece2485bece2485",
+        "functionamplifytippingbece2485bece2485CustomMessage"
+      ]
+    },
     "authamplifytippingbece2485bece2485": {
       "Type": "AWS::CloudFormation::Stack",
       "Properties": {
@@ -234,7 +283,7 @@
           "usernameAttributes": "email",
           "userPoolGroups": false,
           "adminQueries": false,
-          "triggers": "{}",
+          "triggers": "{\"CustomMessage\":[\"custom\"]}",
           "hostedUI": false,
           "userPoolGroupList": "",
           "serviceName": "Cognito",
@@ -253,7 +302,26 @@
             ]
           },
           "breakCircularDependency": true,
-          "dependsOn": "",
+          "dependsOn": "[object Object]",
+          "authProviders": "",
+          "parentStack": {
+            "Ref": "AWS::StackId"
+          },
+          "authTriggerConnections": "{\"triggerType\":\"CustomMessage\",\"lambdaFunctionName\":\"amplifytippingbece2485bece2485CustomMessage\"}",
+          "permissions": "",
+          "env": "dev"
+        }
+      }
+    },
+    "functionamplifytippingbece2485bece2485CustomMessage": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": "https://s3.amazonaws.com/amplify-amplifytipping-dev-0fe17-deployment/amplify-cfn-templates/function/amplifytippingbece2485bece2485CustomMessage-cloudformation-template.json",
+        "Parameters": {
+          "modules": "custom",
+          "resourceName": "amplifytippingbece2485bece2485CustomMessage",
+          "deploymentBucketName": "amplify-amplifytipping-dev-0fe17-deployment",
+          "s3Key": "amplify-builds/amplifytippingbece2485bece2485CustomMessage-4b7a34626e673877777a-build.zip",
           "env": "dev"
         }
       }

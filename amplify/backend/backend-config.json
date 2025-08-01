@@ -2,7 +2,17 @@
   "auth": {
     "amplifytippingbece2485bece2485": {
       "customAuth": false,
-      "dependsOn": [],
+      "dependsOn": [
+        {
+          "attributes": [
+            "Arn",
+            "Name"
+          ],
+          "category": "function",
+          "resourceName": "amplifytippingbece2485bece2485CustomMessage",
+          "triggerProvider": "Cognito"
+        }
+      ],
       "frontendAuthConfig": {
         "mfaConfiguration": "ON",
         "mfaTypes": [
@@ -31,6 +41,31 @@
       },
       "providerPlugin": "awscloudformation",
       "service": "Cognito"
+    }
+  },
+  "function": {
+    "amplifytippingbece2485bece2485CustomMessage": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_amplifytippingbece2485bece2485CustomMessage_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "amplifytippingbece2485bece2485CustomMessage"
+        }
+      ]
+    },
+    "AMPLIFY_function_amplifytippingbece2485bece2485CustomMessage_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "amplifytippingbece2485bece2485CustomMessage"
+        }
+      ]
     }
   }
 }
