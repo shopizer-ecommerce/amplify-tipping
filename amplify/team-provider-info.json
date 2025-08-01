@@ -10,6 +10,11 @@
       "StackName": "amplify-amplifytipping-dev-0fe17",
       "StackId": "arn:aws:cloudformation:ca-central-1:013537969376:stack/amplify-amplifytipping-dev-0fe17/555d1500-6ecd-11f0-ac30-06c939eaf671",
       "AmplifyAppId": "d24eif5iebm8hs"
+    },
+    "categories": {
+      "auth": {
+        "amplifytippingbece2485bece2485": {}
+      }
     }
   }
 }
